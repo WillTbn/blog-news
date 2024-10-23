@@ -18,7 +18,7 @@ class UserTableSeeder extends Seeder
     public function run(): void
     {
         User::factory()
-            ->has(BlogNew::factory()->has(Comment::factory(6)))
+            ->has(BlogNew::factory(10)->has(Comment::factory(6)))
         ->create([
             'email' => 'jorge@gmail.com.br',
             'password' => Hash::make(123),

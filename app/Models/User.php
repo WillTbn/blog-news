@@ -21,7 +21,9 @@ class User extends Authenticatable
     protected $fillable = [
         'name',
         'email',
+        'avatar',
         'password',
+        'id',
     ];
 
     /**
@@ -46,7 +48,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    public function getAvatarAttribute($key)
+    {
+        return asset('storage').'/'.$key;
+    }
     public function blogNews():HasMany
     {
         return $this->hasMany(BlogNew::class);
