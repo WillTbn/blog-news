@@ -1,5 +1,11 @@
 <template>
     <Head title="Editando noticia"/>
+    <div class="" v-if="errors" :key="errors">
+        <ToastDanger
+            v-for="(item, index) in errors" :key="index"
+            :textMessage="item"
+        />
+    </div>
     <Dialog :open="flash.success" title="Sucesso!" :description="flash.message" button="Ok!" />
     <AuthenticatedLayout>
         <editBlogLayout v-if="newsBlog" :key="newsBlog"/>
@@ -15,9 +21,12 @@ import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout.vue';
 // import { Inertia} from '@inertiajs/inertia'
 import Dialog from '../../Components/Dialog.vue';
 import EditBlogLayout from '../../Layouts/Blog/EditBlogLayout.vue';
+import ToastDanger from '@/Components/Alert/ToastDanger.vue';
+
 const props = defineProps({
     blog_new:{type:[Array,Object]},
-    flash:{type:Object}
+    flash:{type:Object},
+    errors:{type:[Object, Array]}
 })
 
 

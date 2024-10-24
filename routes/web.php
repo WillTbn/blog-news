@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/{blog}', 'getOne')->name('getOne');
         Route::get('/', 'create')->name('create');
         Route::post('/', 'store')->name('store');
-        Route::put('/', 'update')->name('update');
+        Route::post('/update', 'update')->name('update');
         Route::delete('/', 'destroy')->name('destroy');
     });
 

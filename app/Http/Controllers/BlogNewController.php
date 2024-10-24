@@ -10,6 +10,8 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Vinkla\Hashids\Facades\Hashids;
 
 class BlogNewController extends Controller
@@ -31,6 +33,22 @@ class BlogNewController extends Controller
         $blog = BlogNew::where('hash_id', $request->hash_id)->first();
         $blog->title = $request->title;
         $blog->content = $request->content;
+        $blog->subtitle = $request->subtitle;
+        Log::info('AMIGO ESTOU AQUI');
+        if ($request->hasFile('photo')) {
+            $path = $request->photo->storePublicly('photos/blog', 'public', $request->photo->hashName());
+            // $path = $request->file('photo')->store('photos', 'public');
+
+            if($blog->photo != asset('storage/default.png')){
+                $url = parse_url($blog->photo);
+                $path = ltrim($url['path'], '/storage\/');
+                if(Storage::disk('public')->exists($path)){
+                    Storage::disk('public')->delete($path);
+                }
+            }
+            $blog->photo = $path;
+            Log::info('AQUI O '.$path);
+        }
         $blog->updateOrFail();
         // return Redirect::route('profile.edit');
         return redirect()->back()->with('success', 'Noticia  alterada sucesso!');
@@ -53,7 +71,8 @@ class BlogNewController extends Controller
         $request->validate([
             'title' => 'required|string|max:100',
             'content' => 'required',
-            // 'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'subtitle' => 'required|string',
+            'photo' => 'nullable|image|max:2048',
         ]);
         $user = Auth::user();
         // dd($user->id);
@@ -61,19 +80,24 @@ class BlogNewController extends Controller
         $blog->user_id = $user->id;
         $blog->title =$request->title;
         $blog->content =$request->content;
+        $blog->subtitle =$request->subtitle;
+        // Se houver uma foto, armazene-a
+        if ($request->hasFile('photo')) {
+            $path = $request->photo->storePublicly('photos/blog', 'public', $request->photo->hashName());
+            // $path = $request->file('photo')->store('photos', 'public');
+
+            // if($blog->photo != asset('storage/default.png')){
+            //     $url = parse_url($blog->photo);
+            //     $path = ltrim($url['path'], '/storage\/');
+            //     if(Storage::disk('public')->exists($path)){
+            //         Storage::disk('public')->delete($path);
+            //     }
+            // }
+            $blog->photo = $path;
+            Log::info('AQUI O '.$path);
+        }
         $blog->hash_id =Hashids::encode(now()->timestamp, $random);
         $blog->saveOrFail();
-
-        // BlogNew::create([
-        //     'user_id' => $user->id,
-        //     'title' => $request->title,
-        //     'content' => $request->content,
-        //     'hash_id' => Hashids::encode(now())
-        // ]);
-
-        // event(new Registered($user));
-
-        // Auth::login($user);
 
         return redirect(route('dashboard', absolute: false));
     }

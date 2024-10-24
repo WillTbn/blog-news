@@ -6,13 +6,13 @@
     </AuthenticatedLayout>
 </template>
 <script setup>
-import { Head} from '@inertiajs/vue3';
-
+import { Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '../../Layouts/AuthenticatedLayout.vue';
 // import { Inertia} from '@inertiajs/inertia'
 import Dialog from '../../Components/Dialog.vue';
 import CreateBlogLayout from '../../Layouts/Blog/CreateBlogLayout.vue';
 defineProps({
-    flash:{type:Object}
+    flash:{type:Object},
+    errors:{type:[Object, Array]}
 })
 </script>

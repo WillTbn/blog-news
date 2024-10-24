@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Carbon\Carbon;
 
 class BlogNew extends Model
 {
@@ -14,6 +15,7 @@ class BlogNew extends Model
         'hash_id',
         'title',
         'content',
+        'photo',
         'hash_id',
     ];
 
@@ -27,5 +29,13 @@ class BlogNew extends Model
     }
     public function scopeCountComment($query){
         return $query->withCount('comments');
+    }
+    public function getPhotoAttribute($value)
+    {
+        return asset('storage/'.$value);
+    }
+    public function getCreatedAtAttribute($value)
+    {
+        return Carbon::parse($value)->format('d/m/Y');
     }
 }

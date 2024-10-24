@@ -11,6 +11,6 @@ class Comment extends Model
         'hash_id',
         'name',
         'content',
-        'hash_id',
+        'blog_new_id'
     ];
 }
