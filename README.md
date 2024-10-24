@@ -8,48 +8,92 @@
 </p>
 
 ## About project
-
 **Instalando o projeto**
 
-O projeto se utiliza de contêineres Docker, através do pacote *Laravel Sail* para facilitar a configuração do ambiente de desenvolvimento. Portanto, é necessário que já possua o Docker e o Docker Compose instalados na máquina.
+**Passos para o rodar o projeto localmente(com docker):**
 
-Você é livre para rodar o projeto em ambiente local mas esse texto não tratará essa situação.
+O projeto se utiliza de contêineres Docker, através do pacote *Laravel Sail* para facilitar a configuração do ambiente de desenvolvimento. Portanto, é necessário que já possua o Docker e o Docker Compose instalados na máquina.
 
 Links para instalação e configuração de Docker:
 
 - [Windows](https://docs.docker.com/docker-for-windows/install/)
 - [Linux (Debian based)](https://docs.docker.com/engine/install/ubuntu/)
 
-**Passos para o rodar o projeto localmente(com docker):**
 
-- Faça um clone do projeto para sua máquina local
-- Crie um arquivo `.env`, recomendamos usar `.env-example` como base `cp .env-exemplo .env`
-- Adicione ou altere as chaves conforme sua necessidade(atenção aos dados do banco de dados)
-- acesse a pasta do projeto via console (terminal/PowerShell/CMD)
-- execute o comando:
 
-```
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php82-composer:latest \
-    composer install --ignore-platform-reqs
-```
+    1. Faça um clone do projeto para sua máquina local
+    2. Crie um arquivo `.env`, recomendamos usar `.env-example` como base `cp .env-exemplo .env`
+    3. Adicione ou altere as chaves conforme sua necessidade(atenção aos dados do banco de dados)
+    4. acesse a pasta do projeto via console (terminal/PowerShell/CMD)
+    5. execute o comando:
 
-- Após finalizado processamento, execute o comando `docker compose up -d`
+    ```
+    docker run --rm \
+        -u "$(id -u):$(id -g)" \
+        -v "$(pwd):/var/www/html" \
+        -w /var/www/html \
+        laravelsail/php82-composer:latest \
+        composer install --ignore-platform-reqs
+    ```
 
-O primeiro comando realiza a instalação dos pacotes via composer especificados no arquivo `composer.json` e uma vez que a instalação termina, a pasta *vendor* passa a ficar disponível no projeto. O comando seguinte levanta os contêineres baseado na descrição de serviços feita no arquivo `docker-compose.yml`.
+    6. Após finalizado processamento, execute o comando `docker compose up -d`
 
-Por padrão, não é necessária nenhuma configuração no arquivo *.env* do projeto. Caso seja necessária alguma edição na configuração padrão (relacionado a binding ports ou credenciais de banco de dados), basta editar o arquivo *.env*.
+    O primeiro comando realiza a instalação dos pacotes via composer especificados no arquivo `composer.json` e uma vez que a instalação termina, a pasta *vendor* passa a ficar disponível no projeto. O comando seguinte levanta os contêineres baseado na descrição de serviços feita no arquivo `docker-compose.yml`.
 
-- Execute a migrate com o seed com comando `php artisan migrate --seed`
+    Por padrão, não é necessária nenhuma configuração no arquivo *.env* do projeto. Caso seja necessária alguma edição na configuração padrão (relacionado a binding ports ou credenciais de banco de dados), basta editar o arquivo *.env*.
 
-Esse comando ira cria as tabela no banco, lembre de cria o banco de dados com nome que esta especificado no .env, e também popular com dados fake's para facilitar nossos teste. 
+    8. Execute a migrate com o seed com comando `php artisan migrate --seed`
 
+    Esse comando ira cria as tabela no banco, lembre de cria o banco de dados com nome que esta especificado no .env, e também popular com dados fake's para facilitar nossos teste. 
+
+    9. para executa o front-end rode `npm run dev`
 
 Se tudo deu certo até aqui já será possivel via api pegar os dados publicos dos artigos do blog.
+
+**roda sem docker**
+
+ - Requisitos minimos:
+    - php82
+    - composer 
+    - node 
+
+    1. Faça um clone do projeto para sua máquina local
+    2. Crie um arquivo `.env`, recomendamos usar `.env-example` como base `cp .env-exemplo .env`
+    3. Adicione ou altere as chaves conforme sua necessidade(atenção aos dados do banco de dados)
+    4. acesse a pasta do projeto via console (terminal/PowerShell/CMD)
+    5. execute o comando:
+
+    ``` 
+    composer install 
+    ```
+    6. crie o banco de dados no seu MySQL com as especificações iguais do .env e rode o comando a seguir para cria as tabelas e popular com dados fake's
+    ``` 
+    php artisan migrate --seed
+    ```
+    7. Se tudo deu certo até aqui já será possivel via api pegar os dados publicos dos artigos do blog.
+
+    8. rode o comando para roda toda enginer do Vue.js com Inertia.js do sistema de controle do blog:
+    ``` 
+    npm run dev
+    ```
+
+
+***observação***
+
+Se tudo de certo o sistema irá cria um usuário padrão inicial, mas vocês tambem pode ser registra.
+
 
 **Material de Apoio**
 
 [documentação da API no postman](https://documenter.getpostman.com/view/7296995/2sAY4rGRZD)
+
+
+
+**contato**
+
+jlbnunes@live.com
+
+[whatsapp](https://api.whatsapp.com/send/?phone=5521983425387&text=""&type=phone_number&app_absent=0)
+
+
+Se quser sabe mais ou teve algum problema, só me fala!
